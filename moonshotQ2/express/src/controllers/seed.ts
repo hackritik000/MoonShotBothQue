@@ -17,7 +17,7 @@ export const seed = asyncHandler(
 
     const data = xlsx.utils.sheet_to_json(sheet);
     console.log(data);
-    for (const e of data) {
+    for (const e of data as any) {
       const excelEpoch = new Date(Date.UTC(1900, 0, 1)); // 1900-01-01
       const daysOffset = e.Day > 59 ? e.Day - 2 : e.Day - 1; // Adjust for Excel's leap year bug in 1900
       const Day = new Date(
@@ -33,6 +33,6 @@ export const seed = asyncHandler(
 
     return res
       .status(200)
-      .json(new ApiResponse(200, { data }, 'seed send sucessfully'));
+      .json(new ApiResponse(200, {}, 'seed send sucessfully'));
   }
 );

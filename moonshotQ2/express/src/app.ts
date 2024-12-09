@@ -22,17 +22,26 @@ import { ApiError } from './utils/ApiError.js';
 
 // Route Declaration
 app.use('/api/v1/users', userRoute);
-
-// Handel error
-app.use((err: any, _: express.Request, res: express.Response) => {
-  if (err instanceof ApiError) {
-    res
-      .status(err.statusCode)
-      .json({ statusCode: err.statusCode, message: err.message });
-  } else {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+app.get('/test', (req: express.Request, res: express.Response) => {
+  res.status(200).json({ message: 'api is working' });
 });
+
+app.use(
+  (
+    err: any,
+    _: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    if (err instanceof ApiError) {
+      res
+        .status(err.statusCode)
+        .json({ statusCode: err.statusCode, message: err.message });
+    } else {
+      console.error(err.stack);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+);
 
 export { app };
